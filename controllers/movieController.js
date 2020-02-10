@@ -43,17 +43,18 @@ module.exports = {
   },
 
   addMovie: (req, res) => {
-    let { movie } = req.body;
+    let movie = req.body;
+    console.log(movie);
 
     if (movie) {
       let sql = `INSERT INTO movies SET ?`;
       mysqldb.query(sql, movie, (err, result) => {
         if (err) res.status(500).send(err);
 
-        return res.status(200).send({ result, message: "Movie added!" });
+        return res.status(200).send({ message: "Movie added!", result });
       });
     } else {
-      return res.status(200).send("Insert data first!");
+      return res.status(200).send("Insert data movie first!");
     }
   },
 

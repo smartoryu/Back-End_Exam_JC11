@@ -45,7 +45,9 @@ module.exports = {
   addCategory: (req, res) => {
     let category = req.body;
 
-    if (category) {
+    console.log(category);
+
+    if (category.length > 0) {
       let sql = `INSERT INTO categories SET ?`;
       mysqldb.query(sql, category, (err, result) => {
         if (err) res.status(500).send(err);

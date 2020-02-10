@@ -2,7 +2,7 @@ const { mysqldb } = require("../database");
 
 module.exports = {
   getMovcat: (req, res) => {
-    let sql = `SELECT m.name AS 'Movie Name', c.name AS 'Category Name' FROM movies m INNER JOIN movcat mc ON m.id=mc.idmovie INNER JOIN categories c ON mc.idcategory=c.id;`;
+    let sql = `SELECT m.name AS 'Movie Name', c.name AS 'Category Name' FROM movies m INNER JOIN movcat mc ON m.id=mc.idmovie INNER JOIN categories c ON mc.idcategory=c.id ORDER BY mc.idmovie;`;
     mysqldb.query(sql, (err, result) => {
       if (err) res.status(500).send(err);
 
@@ -17,14 +17,17 @@ module.exports = {
   addMovcat: (req, res) => {
     let movcat = req.body;
 
-    console.log(movcat);
-
     if (movcat) {
-      let sql = `INSERT INTO movcat SET ?`;
-      mysqldb.query(sql, movcat, (err, result) => {
+      let sql = `INSERT IGNORE INTO movcat SET ?`;
+      mysqldb.query(sql, movcat, (err, resEdit) => {
         if (err) res.status(500).send(err);
 
-        return res.status(200).send({ result, message: "Movcat added!" });
+        let sql = `SELECT m.name AS 'Movie Name', c.name AS 'Category Name' FROM movies m INNER JOIN movcat mc ON m.id=mc.idmovie INNER JOIN categories c ON mc.idcategory=c.id ORDER BY mc.idmovie;`;
+        mysqldb.query(sql, (err, result) => {
+          if (err) res.status(500).send(err);
+
+          return res.status(200).send({ message: "Movcat added!", result });
+        });
       });
     } else {
       return res.status(200).send("Insert data first!");
@@ -32,13 +35,22 @@ module.exports = {
   },
 
   deleteMovcat: (req, res) => {
-    let { id } = req.params;
+    let { idmovie, idcategory } = req.body;
 
-    let sql = `DELETE FROM movcat where id = ${id}`;
-    mysqldb.query(sql, (err, result) => {
-      if (err) res.status(500).send(err);
+    if (idmovie && idcategory) {
+      let sql = `DELETE FROM movcat WHERE idmovie = ${idmovie} AND idcategory = ${idcategory}`;
+      mysqldb.query(sql, (err, resDelete) => {
+        if (err) res.status(500).send(err);
 
-      return res.status(200).send({ result, message: "Movcat deleted!" });
-    });
+        let sql = `SELECT m.name AS 'Movie Name', c.name AS 'Category Name' FROM movies m INNER JOIN movcat mc ON m.id=mc.idmovie INNER JOIN categories c ON mc.idcategory=c.id ORDER BY mc.idmovie;`;
+        mysqldb.query(sql, (err, result) => {
+          if (err) res.status(500).send(err);
+
+          return res.status(200).send({ message: "Movcat deleted!", result });
+        });
+      });
+    } else {
+      return res.status(200).send("Insert idmovie & idcategory first!");
+    }
   }
 };
