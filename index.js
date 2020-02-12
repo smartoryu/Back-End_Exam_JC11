@@ -11,11 +11,12 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 
 // ================= Routes ================ //
-const { movieRouters, categoryRouters, movcatRouters } = require("./routers");
+const { authRouters, movieRouters, categoryRouters, movcatRouters } = require("./routers");
 
 // =========== Routes Middleware =========== //
-app.use("/movie", movieRouters);
+app.use("/auth", authRouters);
 app.use("/cat", categoryRouters);
+app.use("/movie", movieRouters);
 app.use("/movcat", movcatRouters);
 
 app.get("/", (req, res) => res.status(200).send("Welcome to Exam API!"));

@@ -1,6 +1,9 @@
 SELECT * FROM exam_api.movies;
 SELECT * FROM exam_api.categories;
 SELECT * FROM exam_api.movcat ORDER BY idmovie;
+SELECT * FROM exam_api.users;
+
+SELECT name FROM movies where name = 'Fast X';
 
 INSERT INTO `exam_api`.`movies` (`name`, `year`, `description`) VALUES ('Equalizer', '2012', 'keren abis');
 INSERT INTO `exam_api`.`movies` (`name`, `year`, `description`) VALUES ('Transformer', '2010', 'boleh lah');
