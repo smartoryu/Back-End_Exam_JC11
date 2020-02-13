@@ -4,26 +4,23 @@ module.exports = {
   getMovie: (req, res) => {
     let { name } = req.query;
     let { id } = req.params;
-    const page = parseInt(req.query.page);
+    const page = parseInt(req.params.page);
     const limit = 5;
 
     if (page) {
-      const startIndex = (page - 1) * limit;
-      const endIndex = page * limit;
-      const next = { page: page + 1, limit };
-      const previous = { page: page - 1, limit };
-
-      let sql = `SELECT * FROM movies ORDER BY id LIMIT ${startIndex}, ${endIndex}`;
-      mysqldb.query(sql, (err, result) => {
+      let sql = `SELECT id FROM movies`;
+      mysqldb.query(sql, (err, all) => {
         if (err) res.status(500).send(err);
 
-        if (endIndex < result[0].length && startIndex > 0) {
-          return res.status(200).send({ next, previous, results: result });
-        } else if (startIndex > 0) {
-          return res.status(200).send({ previous, results: result });
-        } else {
-          return res.status(200).send({ next, results: result });
-        }
+        const maxPage = Math.ceil(all.length / limit);
+        const startIndex = (page - 1) * limit;
+
+        let sql = `SELECT * FROM movies ORDER BY id LIMIT ${startIndex}, ${limit}`;
+        mysqldb.query(sql, (err, result) => {
+          if (err) res.status(500).send(err);
+
+          return res.status(200).send({ maxPage, results: result });
+        });
       });
     } else if (name) {
       let sql = `SELECT * FROM movies WHERE name = '${name}'`;

@@ -3,6 +3,7 @@ const { movieController } = require("../controllers");
 
 router.get("/", movieController.getMovie);
 router.get("/:id", movieController.getMovie);
+router.get("/page/:page", movieController.getMovie);
 
 router.post("/add", movieController.addMovie);
 router.put("/edit/:id", movieController.editMovie);
