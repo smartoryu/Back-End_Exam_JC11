@@ -2,61 +2,57 @@ const { mysqldb } = require("../database");
 
 module.exports = {
   getCategory: (req, res) => {
-    let { name } = req.query;
-    let { id } = req.params;
-    const page = parseInt(req.params.page);
-    const limit = 5;
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit) || 5;
 
-    if (page) {
-      let sql = `SELECT id FROM categories`;
-      mysqldb.query(sql, (err, all) => {
+    // GET THE SUM OF DATA TO COUNT A PAGES
+    let sql = `SELECT id FROM categories`;
+    mysqldb.query(sql, (err, all) => {
+      if (err) res.status(500).send(err);
+      const pagesCount = Math.ceil(all.length / limit);
+      const startIndex = (page - 1) * limit;
+
+      sql = `SELECT * FROM categories ORDER BY id LIMIT ${startIndex}, ${limit}`;
+      mysqldb.query(sql, (err, resPage) => {
         if (err) res.status(500).send(err);
 
-        const maxPage = Math.ceil(all.length / limit);
-        const startIndex = (page - 1) * limit;
+        // console.log("pagesCount", pagesCount);
+        // console.log("page", page);
+        // console.log("limit", limit);
+        // console.log("res", resPage);
 
-        let sql = `SELECT * FROM categories ORDER BY id LIMIT ${startIndex}, ${limit}`;
-        mysqldb.query(sql, (err, result) => {
-          if (err) res.status(500).send(err);
-
-          return res.status(200).send({ maxPage, results: result });
-        });
+        /**
+         * REGULAR GET WITH PAGINATION, ONLY RECEIVE QUERY OF CURRENT PAGE
+         */
+        return res.status(200).send({ pagesCount, limit, results: resPage });
       });
-    } else if (name) {
-      let sql = `SELECT * FROM categories WHERE name = '${name}'`;
-      mysqldb.query(sql, (err, result) => {
+    });
+  },
+
+  searchCategory: (req, res) => {
+    let { search } = req.query;
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit) || 5;
+
+    // GET THE SUM OF DATA TO COUNT A PAGES
+    let sql = `SELECT id FROM categories WHERE name LIKE '%${search}%'`;
+    mysqldb.query(sql, (err, all) => {
+      if (err) res.status(500).send(err);
+      const pagesCount = Math.ceil(all.length / limit);
+      const startIndex = (page - 1) * limit;
+
+      // FOR SEARCH GET, BUT STILL USING PAGINATION
+      let sql = `SELECT * FROM categories WHERE name LIKE '%${search}%' ORDER BY id LIMIT ${startIndex}, ${limit}`;
+      mysqldb.query(sql, (err, resSearch) => {
         if (err) res.status(500).send(err);
 
-        if (result[0]) {
-          res.status(200).send(result[0]);
-        } else {
-          res.status(200).send("Category not found!");
-        }
-      });
-    } else if (id) {
-      let sql = `SELECT * FROM categories WHERE id = ${id}`;
-      mysqldb.query(sql, (err, result) => {
-        if (err) res.status(500).send(err);
+        // console.log("page", pagesCount);
+        // console.log("limit", limit);
+        // console.log("res", resSearch);
 
-        if (result[0]) {
-          res.status(200).send(result);
-        } else {
-          res.status(200).send("Category not found!");
-        }
+        return res.status(200).send({ pagesCount, limit, results: resSearch });
       });
-    } else {
-      let sql = `SELECT * FROM categories`;
-      mysqldb.query(sql, (err, result) => {
-        if (err) res.status(500).send(err);
-        console.log(result[0]);
-
-        if (result[0]) {
-          res.status(200).send(result);
-        } else {
-          res.status(200).send("Category not found!");
-        }
-      });
-    }
+    });
   },
 
   addCategory: (req, res) => {

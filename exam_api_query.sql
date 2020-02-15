@@ -5,9 +5,12 @@ SELECT * FROM exam_api.users;
 
 SELECT id FROM exam_api.categories;
 
-SELECT * FROM exam_api.categories ORDER BY id LIMIT 0, 5;
+-- SELECT * FROM categories WHERE name LIKE '%drama%' ORDER BY id LIMIT ${startIndex}, ${limit}
+SELECT * FROM categories WHERE name LIKE '%dr%' ORDER BY id LIMIT 0, 1;
+SELECT * FROM movies WHERE name LIKE '%frozen%' ORDER BY id;
 
-SELECT name FROM movies where name = 'Fast X';
+SELECT * FROM movies WHERE name LIKE '%a%';
+SELECT * FROM movies WHERE name = 'Fast X';
 
 INSERT INTO `exam_api`.`movies` (`name`, `year`, `description`) VALUES ('Equalizer', '2012', 'keren abis');
 INSERT INTO `exam_api`.`movies` (`name`, `year`, `description`) VALUES ('Transformer', '2010', 'boleh lah');

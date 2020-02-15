@@ -2,8 +2,8 @@ const router = require("express").Router();
 const { categoryController } = require("../controllers");
 
 router.get("/", categoryController.getCategory);
-router.get("/:id", categoryController.getCategory);
-router.get("/page/:page", categoryController.getCategory);
+
+router.get("/search", categoryController.searchCategory);
 
 router.post("/add", categoryController.addCategory);
 router.put("/edit/:id", categoryController.editCategory);

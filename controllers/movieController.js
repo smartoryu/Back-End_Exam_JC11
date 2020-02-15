@@ -4,22 +4,22 @@ module.exports = {
   getMovie: (req, res) => {
     let { name } = req.query;
     let { id } = req.params;
-    const page = parseInt(req.params.page);
-    const limit = 5;
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit) || 5;
 
     if (page) {
       let sql = `SELECT id FROM movies`;
       mysqldb.query(sql, (err, all) => {
         if (err) res.status(500).send(err);
 
-        const maxPage = Math.ceil(all.length / limit);
+        const pagesCount = Math.ceil(all.length / limit);
         const startIndex = (page - 1) * limit;
 
         let sql = `SELECT * FROM movies ORDER BY id LIMIT ${startIndex}, ${limit}`;
         mysqldb.query(sql, (err, result) => {
           if (err) res.status(500).send(err);
 
-          return res.status(200).send({ maxPage, results: result });
+          return res.status(200).send({ pagesCount, limit, results: result });
         });
       });
     } else if (name) {
