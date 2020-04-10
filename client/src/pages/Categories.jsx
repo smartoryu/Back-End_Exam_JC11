@@ -6,7 +6,7 @@ import { Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Container, Row, Col, InputGroup, InputGroupAddon, Input } from "reactstrap";
 
-import { API_URL } from "../config/API_URL";
+import { API_URL } from "../helpers/API_URL";
 
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { PaginationComp } from "../components/Pagination";

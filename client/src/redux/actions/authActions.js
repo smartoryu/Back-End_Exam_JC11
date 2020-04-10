@@ -1,8 +1,8 @@
 import Axios from "axios";
-import { API_URL } from "../../config/API_URL";
+import { API_URL } from "../../helpers/API_URL";
 
-export const KeepLoginThunk = id => {
-  return async dispatch => {
+export const KeepLoginThunk = (id) => {
+  return async (dispatch) => {
     try {
       if (id) {
         const { data } = await Axios.get(`${API_URL}/auth/login/${id}`);
@@ -16,7 +16,7 @@ export const KeepLoginThunk = id => {
 };
 
 export const LoginActionThunk = (username, password) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       let user = await Axios.get(`${API_URL}/auth/login`, { params: { username, password } });
 
@@ -46,8 +46,8 @@ export const LoginActionThunk = (username, password) => {
   };
 };
 
-export const CheckUsernameThunk = username => {
-  return async dispatch => {
+export const CheckUsernameThunk = (username) => {
+  return async (dispatch) => {
     try {
       let { data } = await Axios.get(`${API_URL}/auth/check?username="${username}"`);
 
@@ -69,7 +69,7 @@ export const CheckUsernameThunk = username => {
 };
 
 export const RegisterActionThunk = (secret, name, username, email, password, password2) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       let newUser = await Axios.post(`${API_URL}/auth/register`, {
         secret,
@@ -77,7 +77,7 @@ export const RegisterActionThunk = (secret, name, username, email, password, pas
         username,
         email,
         password,
-        password2
+        password2,
       });
 
       switch (newUser.data.status) {

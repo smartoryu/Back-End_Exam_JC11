@@ -6,12 +6,12 @@ import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { API_URL } from "../config/API_URL";
+import { API_URL } from "../helpers/API_URL";
 
 import { PaginationComp } from "../components/Pagination";
 
 function Movies() {
-  const Login = useSelector(state => state.auth.login);
+  const Login = useSelector((state) => state.auth.login);
   const [movies, setMovies] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -35,7 +35,7 @@ function Movies() {
           setPagesCount(data.pagesCount);
         } else {
           const { data } = await Axios.get(`${API_URL}/movie/search`, {
-            params: { search: searchQuery, page: currentSearchPage }
+            params: { search: searchQuery, page: currentSearchPage },
           });
           // console.log(data);
           setCurrentPage(0);
@@ -51,11 +51,11 @@ function Movies() {
   }, [currentPage, currentSearchPage]);
 
   // ================================================== ON ENTER SEARCH QUERY
-  const searchKeyPress = async e => {
+  const searchKeyPress = async (e) => {
     if (e.key === "Enter") {
       try {
         const { data } = await Axios.get(`${API_URL}/movie/search`, {
-          params: { search: searchQuery, page: currentSearchPage }
+          params: { search: searchQuery, page: currentSearchPage },
         });
         console.log(data);
         setCurrentPage(0);
@@ -74,13 +74,13 @@ function Movies() {
   };
 
   // ================================================== CONST HANDLE SEARCH
-  const btnDelete = id => {
+  const btnDelete = (id) => {
     toast.warn("Are you sure?", {
       position: "top-center",
       hideProgressBar: true,
       autoClose: 1000,
       closeButton: false,
-      onOpen: () => setOnDelete(id)
+      onOpen: () => setOnDelete(id),
       // onClose: () => {}
     });
   };
@@ -91,17 +91,17 @@ function Movies() {
       hideProgressBar: true,
       autoClose: 1000,
       closeButton: false,
-      onOpen: () => setOnDelete(-1)
+      onOpen: () => setOnDelete(-1),
     });
   };
 
-  const btnEdit = id => {
+  const btnEdit = (id) => {
     toast(<span className="font-weight-bold text-dark">Edit</span>, {
       position: "top-center",
       hideProgressBar: true,
       autoClose: 1000,
       closeButton: false,
-      onOpen: () => setOnEdit(id)
+      onOpen: () => setOnEdit(id),
       // onClose: () => {}
     });
   };
@@ -112,7 +112,7 @@ function Movies() {
       hideProgressBar: true,
       autoClose: 1000,
       closeButton: false,
-      onOpen: () => setOnEdit(false)
+      onOpen: () => setOnEdit(false),
       // onClose: () => {}
     });
   };
@@ -123,7 +123,7 @@ function Movies() {
       hideProgressBar: true,
       autoClose: 1000,
       closeButton: false,
-      onOpen: () => setOnEdit(false)
+      onOpen: () => setOnEdit(false),
       // onClose: () => {}
     });
   };
@@ -153,7 +153,7 @@ function Movies() {
         <div className="mb-3 w-25">
           <InputGroup size="sm">
             <InputGroupAddon addonType="prepend">Search:</InputGroupAddon>
-            <Input type="text" onKeyPress={searchKeyPress} onChange={e => setSearchQuery(e.target.value)} />
+            <Input type="text" onKeyPress={searchKeyPress} onChange={(e) => setSearchQuery(e.target.value)} />
           </InputGroup>
         </div>
 
@@ -202,7 +202,7 @@ function Movies() {
                       style={{
                         width: "35%",
                         fontWeight: "bolder",
-                        textAlign: "right"
+                        textAlign: "right",
                       }}>{`Are you sure deleting ${movie.name}?`}</td>
                     <td style={{ width: "25%" }}>
                       <button onClick={confirmDelete} className="btn btn-sm btn-danger w-25 mr-3">
