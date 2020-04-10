@@ -2,30 +2,15 @@ const { mysqldb } = require("../database");
 
 module.exports = {
   getCategory: (req, res) => {
-    const page = parseInt(req.query.page);
     const limit = parseInt(req.query.limit) || 5;
 
     // GET THE SUM OF DATA TO COUNT A PAGES
-    let sql = `SELECT id FROM categories`;
+    let sql = `SELECT id, name FROM categories`;
     mysqldb.query(sql, (err, all) => {
       if (err) res.status(500).send(err);
       const pagesCount = Math.ceil(all.length / limit);
-      const startIndex = (page - 1) * limit;
 
-      sql = `SELECT * FROM categories ORDER BY id LIMIT ${startIndex}, ${limit}`;
-      mysqldb.query(sql, (err, resPage) => {
-        if (err) res.status(500).send(err);
-
-        // console.log("pagesCount", pagesCount);
-        // console.log("page", page);
-        // console.log("limit", limit);
-        // console.log("res", resPage);
-
-        /**
-         * REGULAR GET WITH PAGINATION, ONLY RECEIVE QUERY OF CURRENT PAGE
-         */
-        return res.status(200).send({ pagesCount, limit, results: resPage });
-      });
+      return res.status(200).send({ pagesCount, result: all });
     });
   },
 
@@ -93,5 +78,5 @@ module.exports = {
 
       return res.status(200).send({ result, message: "Category deleted!" });
     });
-  }
+  },
 };

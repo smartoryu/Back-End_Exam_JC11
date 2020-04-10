@@ -16,10 +16,13 @@ INSERT INTO `exam_api`.`movies` (`name`, `year`, `description`) VALUES ('Equaliz
 INSERT INTO `exam_api`.`movies` (`name`, `year`, `description`) VALUES ('Transformer', '2010', 'boleh lah');
 INSERT INTO `exam_api`.`movies` (`name`, `year`, `description`) VALUES ('Frozen', '2014', 'oke deh');
 
-INSERT INTO `exam_api`.`categories` (`name`) VALUES ('Cartoon');
-INSERT INTO `exam_api`.`categories` (`name`) VALUES ('Drama');
-INSERT INTO `exam_api`.`categories` (`name`) VALUES ('Mellow');
-INSERT INTO `exam_api`.`categories` (`name`) VALUES ('Horror');
+INSERT INTO `exam_api`.`categories` (`name`) VALUES ('Draaaama');
+INSERT INTO `exam_api`.`categories` (`name`) VALUES ('Sci-Fi');
+INSERT INTO `exam_api`.`categories` (`name`) VALUES ('Biography');
+INSERT INTO `exam_api`.`categories` (`name`) VALUES ('Documentary');
+
+INSERT INTO `exam_api`.`movcat` VALUES ('3', '2');
+SELECT last_insert_id();
 
 INSERT INTO `exam_api`.`movcat` VALUES ('1', '1');
 INSERT INTO `exam_api`.`movcat` VALUES ('1', '2');

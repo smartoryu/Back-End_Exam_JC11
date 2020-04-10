@@ -2,4 +2,4 @@
 # GET http://localhost:2600/movie
 # GET http://localhost:2600/movie/2
 
-GET http://localhost:2600/cat?page=1
+GET http://localhost:2600/cat?search=drama
