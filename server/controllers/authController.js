@@ -134,7 +134,7 @@ module.exports = {
           email,
           password: encrypt(password2),
           role: "admin",
-          lastlogin: moment().format("YYYY-MM-DD HH:mm:ss")
+          lastlogin: moment().format("YYYY-MM-DD HH:mm:ss"),
         };
 
         // console.log("REG_SUCCESS", newUser);
@@ -147,5 +147,5 @@ module.exports = {
         });
       }
     });
-  }
+  },
 };
