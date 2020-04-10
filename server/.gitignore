@@ -1,2 +1,6 @@
 /node_modules
 requests.rest
+.env
+
+private.key
+public.key
